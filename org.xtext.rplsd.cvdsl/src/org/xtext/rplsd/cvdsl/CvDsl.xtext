@@ -1,0 +1,9 @@
+grammar org.xtext.rplsd.cvdsl.CvDsl with org.eclipse.xtext.common.Terminals
+
+generate cvDsl "http://www.xtext.org/rplsd/cvdsl/CvDsl"
+
+Model:
+	greetings+=Greeting*;
+	
+Greeting:
+	'Hello' name=ID '!';
