@@ -2,8 +2,91 @@ grammar org.xtext.rplsd.cvdsl.CvDsl with org.eclipse.xtext.common.Terminals
 
 generate cvDsl "http://www.xtext.org/rplsd/cvdsl/CvDsl"
 
-Model:
-	greetings+=Greeting*;
-	
-Greeting:
-	'Hello' name=ID '!';
+CvRoot:
+        sections += CvSection*;
+ 
+CvSection:
+        Biodata | Academic | WorkExperience | OrganizationExperience | Committee | Expertise | Language
+;
+ 
+Biodata:
+        'biodata' name = STRING '{'
+                (('place_of_birth' birth_place = STRING) &
+                ('date_of_birth' birth_date = STRING) &
+                ('email' email = STRING)? &
+                ('gender' gender = Gender)? &
+                ('phone' phone = NUMBER)? &
+                ('nationality' nationality = STRING)?  &
+                ('photo' photo_path = STRING)? &
+                (socialmedias += SocialMedia)* )
+        '}'
+;
+
+SocialMedia:
+    ('linkedin' | 'facebook' | 'twitter' | 'instagram' | 'path' | 'line' ) account = STRING
+;
+
+terminal DECIMAL:
+        ('"'|"'")('0'..'9')+(('.')('0'..'9')+)?('"'|"'")    
+;
+
+terminal NUMBER:
+        ('"'|"'")('0'..'9')+('"'|"'")
+;
+
+enum Gender:
+        Male | Female
+;
+ 
+Academic:
+        'academic' name = STRING '{'
+                (('level' level = STRING) &
+                (duration = Duration) &
+                ('major' major = STRING)? &
+                ('city' city= STRING)? &
+                ('gpa' gpa= STRING)? )
+        '}'
+;
+ 
+Duration:
+        'from' from=STRING ('until' until=STRING)?
+;
+ 
+Language:
+        'language' name = STRING '{'
+                'level' level = STRING
+                (tests += LanguageTest)*
+        '}'
+;
+ 
+LanguageTest:
+        'test' test_name=STRING 'score' score=DECIMAL
+;
+ 
+Expertise:
+        'expertise' name=STRING
+;
+ 
+OrganizationExperience:
+        'organization' name = STRING '{'
+                ((duration = Duration) &
+                ('position' position = STRING) &
+                ('city' city = STRING)? )
+        '}'
+;
+
+Committee:
+        'committee' name=STRING '{'
+                (('organization' organization = STRING) &
+                ('position' position = STRING) &
+                ( duration = Duration) )
+        '}'
+;
+ 
+WorkExperience:
+        'work' name=STRING '{'
+                ((duration = Duration) &
+                ('position' position = STRING) &
+                ('city' city = STRING)?)
+        '}'
+;
