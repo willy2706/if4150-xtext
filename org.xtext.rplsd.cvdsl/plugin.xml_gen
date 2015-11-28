@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<plugin>
+
+  <extension point="org.eclipse.emf.ecore.generated_package">
+    <package 
+       uri = "http://www.xtext.org/rplsd/cvdsl/CvDsl" 
+       class = "org.xtext.rplsd.cvdsl.cvDsl.CvDslPackage"
+       genModel = "model/generated/CvDsl.genmodel" /> 
+	
+  </extension>
+
+
+
+</plugin>
