@@ -7,6 +7,7 @@ import org.eclipse.xtext.validation.Check
 import org.xtext.rplsd.cvdsl.cvDsl.Biodata
 import org.xtext.rplsd.cvdsl.cvDsl.CvRoot
 import org.xtext.rplsd.cvdsl.cvDsl.CvDslPackage
+import org.xtext.rplsd.cvdsl.cvDsl.CvSection
 
 //import org.eclipse.xtext.validation.Check
 
@@ -16,6 +17,25 @@ import org.xtext.rplsd.cvdsl.cvDsl.CvDslPackage
  * See https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#validation
  */
 class CvDslValidator extends AbstractCvDslValidator {
+	
+	@Check
+	def checkAtLeastOneBiodata(CvSection cvSection){
+		var cvRoot = cvSection.eContainer as CvRoot
+		var cvSections = cvRoot.getSections()	
+		
+		var bioCount  = 0;
+		
+		for(var i=0; i<cvSections.size(); i++){
+			if( cvSections.get(i) instanceof Biodata ){
+				bioCount++
+			}
+		}
+		
+		if (bioCount == 0){
+			error("Minimal one biodata", CvDslPackage$Literals::CV_SECTION__NAME);
+		}
+	}
+	
 
 	@Check
 	def checkOnlyOneBiodata(Biodata biodata) {
