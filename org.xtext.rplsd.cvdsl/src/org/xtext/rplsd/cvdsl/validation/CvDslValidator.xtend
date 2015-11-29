@@ -3,6 +3,11 @@
  */
 package org.xtext.rplsd.cvdsl.validation
 
+import org.eclipse.xtext.validation.Check
+import org.xtext.rplsd.cvdsl.cvDsl.Biodata
+import org.xtext.rplsd.cvdsl.cvDsl.CvRoot
+import org.xtext.rplsd.cvdsl.cvDsl.CvDslPackage
+
 //import org.eclipse.xtext.validation.Check
 
 /**
@@ -12,14 +17,29 @@ package org.xtext.rplsd.cvdsl.validation
  */
 class CvDslValidator extends AbstractCvDslValidator {
 
-//  public static val INVALID_NAME = 'invalidName'
-//
-//	@Check
-//	def checkGreetingStartsWithCapital(Greeting greeting) {
-//		if (!Character.isUpperCase(greeting.name.charAt(0))) {
-//			warning('Name should start with a capital', 
-//					MyDslPackage.Literals.GREETING__NAME,
-//					INVALID_NAME)
-//		}
-//	}
+	@Check
+	def checkOnlyOneBiodata(Biodata biodata) {
+		var cvRoot = (biodata.eContainer as CvRoot)
+		var cvSections = cvRoot.getSections()
+		var bioFirst = false;
+		var bioFound = false;
+		
+		System.out.println("Test Start")
+
+		var bioCount  = 0;
+		
+		for(var i=0; i<cvSections.size(); i++){
+			System.out.println("Equal: " + (cvSections.get(i) instanceof Biodata) +" Name: "+ cvSections.get(i).name)
+			if( cvSections.get(i) instanceof Biodata ){
+				bioCount++
+				if(bioFound == false){
+					if (biodata == cvSections.get(i)) bioFirst = true;
+					bioFound = true
+				}
+			}
+		}
+		
+		if(bioCount > 1 && !bioFirst) 
+			error("Only one biodata allowed", CvDslPackage$Literals::CV_SECTION__NAME);
+	}
 }
