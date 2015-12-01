@@ -43,13 +43,10 @@ class CvDslValidator extends AbstractCvDslValidator {
 		var cvSections = cvRoot.getSections()
 		var bioFirst = false;
 		var bioFound = false;
-		
-		System.out.println("Test Start")
 
 		var bioCount  = 0;
 		
 		for(var i=0; i<cvSections.size(); i++){
-			System.out.println("Equal: " + (cvSections.get(i) instanceof Biodata) +" Name: "+ cvSections.get(i).name)
 			if( cvSections.get(i) instanceof Biodata ){
 				bioCount++
 				if(bioFound == false){

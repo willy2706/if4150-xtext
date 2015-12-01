@@ -2,38 +2,25 @@ grammar org.xtext.rplsd.cvdsl.CvDsl with org.eclipse.xtext.common.Terminals
 
 generate cvDsl "http://www.xtext.org/rplsd/cvdsl/CvDsl"
 
-import "http://www.eclipse.org/emf/2002/Ecore" as ecore
-
 CvRoot:
-        sections += CvSection*;
+    sections += CvSection*;
  
 CvSection:
-        Biodata | Academic | WorkExperience | OrganizationExperience | Committee | Expertise | Language
-;
-
-terminal INTEGER returns ecore::EString:
-        ('"'|"'")('0'..'9')+('"'|"'")
-;
-
-terminal REAL returns ecore::EString:
-		('"'|"'")('0'..'9')+('.')('0'..'9')+('"'|"'")
-;
-
-Number:
-        INTEGER | REAL   
+    Biodata | Academic | WorkExperience | OrganizationExperience | Committee | Expertise | Language
 ;
  
 Biodata:
-        'biodata' name = STRING '{'
-                (('place_of_birth' birth_place = STRING) &
-                ('date_of_birth' birth_date = STRING) &
-                ('email' email = STRING)? &
-                ('gender' gender = Gender)? &
-                ('phone' phone = INTEGER)? &
-                ('nationality' nationality = STRING)?  &
-                ('photo' photo_path = STRING)? &
-                (socialmedias += SocialMedia)* )
-        '}'
+    'biodata' name = STRING '{'
+        (('place_of_birth' birth_place = STRING) &
+        ('date_of_birth' birth_date = STRING) &
+        ('email' email = STRING)? &
+        ('gender' gender = Gender)? &
+        ('phone' phone = STRING)? &
+        ('nationality' nationality = STRING)?  &
+        ('photo' photo_path = STRING)? &
+        ('summary' summary = STRING)? &
+        (socialmedias += SocialMedia)* )
+    '}'
 ;
 
 SocialMedia:
@@ -44,62 +31,64 @@ enum SocialMediaType:
 	LinkedIn | Facebook | Twitter | Instagram | Path | Line
 ;
 
+
+
 enum Gender:
-        Male | Female
+    Male | Female
 ;
  
 Academic:
-        'academic' name = STRING '{'
-                (('level' level = STRING) &
-                (duration = Duration) &
-                ('major' major = STRING)? &
-                ('city' city = STRING)? &
-                ('gpa' gpa = Number)? )
-        '}'
+    'academic' name = STRING '{'
+        (('level' level = STRING) &
+        (duration = Duration) &
+        ('major' major = STRING)? &
+        ('city' city = STRING)? &
+        ('gpa' gpa = STRING)? )
+    '}'
 ;
  
 Duration:
-        'from' from=STRING ('until' until=STRING)?
+    'from' from=STRING ('until' until=STRING)?
 ;
  
 Language:
-        'language' name = STRING '{'
-                'level' level = STRING
-                (tests += LanguageTest)*
-        '}'
+    'language' name = STRING '{'
+        (('level' level = STRING) &
+        (tests += LanguageTest)*)
+    '}'
 ;
  
 LanguageTest:
-        'test' test_name=STRING 'score' score=Number
+    'test' test_name=STRING 'score' score=STRING
 ;
  
 Expertise:
-        'expertise' name=STRING
+    'expertise' name=STRING
 ;
  
 OrganizationExperience:
-        'organization' name = STRING '{'
-                ((duration = Duration) &
-                ('position' position = STRING) &
-                ('city' city = STRING)? &
-                ('info' info += STRING)* )
-        '}'
+    'organization' name = STRING '{'
+        ((duration = Duration) &
+        ('position' position = STRING) &
+        ('city' city = STRING)? &
+        ('info' info += STRING)* )
+    '}'
 ;
 
 Committee:
-        'committee' name=STRING '{'
-                (('organization' organization = STRING) &
-                ('position' position = STRING) &
-                ( duration = Duration) &
-                ('info' info += STRING)* )
-        '}'
+    'committee' name=STRING '{'
+        (('organization' organization = STRING) &
+        ('position' position = STRING) &
+        ( duration = Duration) &
+        ('info' info += STRING)* )
+    '}'
 ;
  
 WorkExperience:
-        'work' name=STRING '{'
-                ((duration = Duration) &
-                ('position' position = STRING) &
-                ('city' city = STRING)? &
-                ('info' info += STRING)* )
-        '}'
+    'work' name=STRING '{'
+        ((duration = Duration) &
+        ('position' position = STRING) &
+        ('city' city = STRING)? &
+        ('info' info += STRING)* )
+    '}'
 ;
